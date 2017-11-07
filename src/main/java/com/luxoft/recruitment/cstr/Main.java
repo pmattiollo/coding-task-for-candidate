@@ -1,12 +1,11 @@
 package com.luxoft.recruitment.cstr;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.stream.Stream;
 
+import com.luxoft.recruitment.cstr.filter.loader.InitialFilterFileLoader;
+import com.luxoft.recruitment.cstr.filter.loader.InitialFilterLoader;
 import com.luxoft.recruitment.cstr.http.Request;
 import com.luxoft.recruitment.cstr.http.Response;
 import com.luxoft.recruitment.cstr.model.IPAdressBlackList;
@@ -130,10 +129,8 @@ public class Main {
 
 	private static void importInitialIPAdresses() throws IOException {
 		IPAdressBlackListRepository repository = new IPAdressBlackListRepository();
-
-		try (Stream<String> ipAdressess = Files.lines(Paths.get("src/main/resources/initial_blacklist"))) {
-			ipAdressess.forEach(ipAdress -> repository.insert(new IPAdressBlackList(ipAdress)));
-		}
+		InitialFilterLoader loader = new InitialFilterFileLoader(repository);
+		loader.load();
 	}
 
 	private static void printBasicOptions() {

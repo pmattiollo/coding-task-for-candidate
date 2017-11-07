@@ -1,6 +1,7 @@
 package com.luxoft.recruitment.cstr;
 
 import static com.luxoft.recruitment.cstr.http.HttpStatus.BAD_REQUEST;
+import static com.luxoft.recruitment.cstr.http.HttpStatus.OK;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class SuperApiControllerTest {
 	private static final String IP_ADRESSS = "74.125.224.72";
 
 	@Test
-	public void test1() {
+	public void BadRequestTest() {
 		IPAdressBlackList registry = new IPAdressBlackList(IP_ADRESSS);
 		blackListRepository.insert(registry);
 
@@ -29,6 +30,14 @@ public class SuperApiControllerTest {
 		Response response = superApiController.healthCheck(request);
 
 		assertEquals(response.getCode(), BAD_REQUEST);
+	}
+
+	@Test
+	public void OKRequestTest() {
+		Request request = new Request(IP_ADRESSS);
+		Response response = superApiController.healthCheck(request);
+
+		assertEquals(response.getCode(), OK);
 	}
 
 }
