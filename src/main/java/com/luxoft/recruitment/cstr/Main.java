@@ -1,7 +1,11 @@
 package com.luxoft.recruitment.cstr;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.luxoft.recruitment.cstr.http.Request;
 import com.luxoft.recruitment.cstr.http.Response;
@@ -31,10 +35,14 @@ public class Main {
 							break;
 						case 4:
 							removeAllIPAdresses();
+							break;
 						case 5:
 							listAllIPAdresses();
 							break;
 						case 6:
+							importInitialIPAdresses();
+							break;
+						case 7:
 							System.out.print("The application is being finalized...");
 							return;
 						default:
@@ -120,6 +128,14 @@ public class Main {
 		}
 	}
 
+	private static void importInitialIPAdresses() throws IOException {
+		IPAdressBlackListRepository repository = new IPAdressBlackListRepository();
+
+		try (Stream<String> ipAdressess = Files.lines(Paths.get("src/main/resources/initial_blacklist"))) {
+			ipAdressess.forEach(ipAdress -> repository.insert(new IPAdressBlackList(ipAdress)));
+		}
+	}
+
 	private static void printBasicOptions() {
 		System.out.println("\n\nPlease select one option: ");
 		System.out.println("\t1 - Submit a request;");
@@ -127,7 +143,8 @@ public class Main {
 		System.out.println("\t3 - Remove an IP Adress from the Blacklist;");
 		System.out.println("\t4 - Remove all IP Adressess from the Blacklist;");
 		System.out.println("\t5 - List all IP Adressess registered;");
-		System.out.println("\t6 - Exit the aplication.");
+		System.out.println("\t6 - Import a list of the initial IP Adressess;");
+		System.out.println("\t7 - Exit the aplication.");
 	}
 
 }

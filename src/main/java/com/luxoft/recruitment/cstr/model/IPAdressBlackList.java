@@ -48,7 +48,7 @@ public class IPAdressBlackList {
 
 	@Override
 	public String toString() {
-		return "BlackList [ipAdress=" + ipAdress + "]";
+		return "IPAdressBlackList [ipAdress=" + ipAdress + "]";
 	}
 
 }
